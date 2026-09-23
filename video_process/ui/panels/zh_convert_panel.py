@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, Optional
 
+from PyQt6.QtGui import QGuiApplication
 from PyQt6.QtWidgets import QPlainTextEdit, QVBoxLayout, QWidget
 
 from ...core.models import TaskResult, ToolContext
@@ -68,8 +69,14 @@ class ZhConvertPanel(ToolPanel):
         if not result.success:
             return
 
+        text = result.outputs[0] if result.outputs else ""
         row = self.row("text")
         if row is not None and isinstance(row.editor, QPlainTextEdit):
-            row.editor.setPlainText(
-                result.outputs[0] if result.outputs else ""
-            )
+            row.editor.setPlainText(text)
+
+        clipboard = QGuiApplication.clipboard()
+        if clipboard is not None:
+            clipboard.setText(text)
+            self.host.notify("已复制到剪贴板", "information", timeout=3)
+        else:
+            self.host.notify("复制失败，请手动选择文本复制", "warning", timeout=4)

@@ -273,16 +273,6 @@ def main():
         # 原 10-12 段应前移 3s -> 07-09
         check("时间已前移 (10->07)", "00:00:07,000" in txt, "")
 
-    # ---------- 13. rename_subtitle ----------
-    print("\n[13] 字幕重命名")
-    from video_process.tools.rename_subtitle import rename_subtitles
-    rd = os.path.join(WORK, "rename")
-    os.makedirs(rd)
-    shutil.copy(srt_src, os.path.join(rd, "r.srt"))
-    r = rename_subtitles(os.path.join(rd, "r.srt"), ctx=mkctx())
-    check("rename 成功", r.success, r.message)
-    check("rename 生成 .srt.txt", os.path.exists(os.path.join(rd, "r.srt.txt")))
-
     # ---------- 14. timeline ----------
     print("\n[14] 时间线计算器")
     from video_process.tools.timeline import calculate_timeline

@@ -20,7 +20,6 @@ from ..tools.jianying_subtitle import (
     export_jianying_subtitles,
 )
 from ..tools.remove_srt import remove_srt_segments
-from ..tools.rename_subtitle import rename_subtitles
 from ..tools.srt_to_ass import srt_to_ass
 
 GROUP = "字幕工具"
@@ -108,34 +107,6 @@ SRT_REMOVE = ToolDefinition(
         ),
     ],
     runner=remove_srt_segments,
-)
-
-SRT_RENAME = ToolDefinition(
-    id="srt-rename",
-    title="字幕重命名（加 .txt）",
-    group=GROUP,
-    description=(
-        "为字幕文件追加 .txt 后缀，方便用文本编辑器直接打开。\n"
-        "  示例: 1.srt -> 1.srt.txt\n"
-        "支持 .srt / .ass / .vtt / .lrc，文件夹模式递归子目录。"
-    ),
-    specs=[
-        ParamSpec(
-            name="input_path",
-            label="字幕文件或文件夹",
-            kind="path",
-            file_patterns=SUBTITLE_EXTS,
-            help="支持单个字幕文件或整个文件夹",
-        ),
-        ParamSpec(
-            name="recursive",
-            label="递归子目录",
-            kind="bool",
-            default=True,
-            required=False,
-        ),
-    ],
-    runner=rename_subtitles,
 )
 
 JIANYING = ToolDefinition(
@@ -244,6 +215,6 @@ BCUT = ToolDefinition(
     runner=export_bcut_subtitles,
 )
 
-DEFS = [SRT2ASS, SRT_REMOVE, SRT_RENAME, JIANYING, BCUT]
+DEFS = [SRT2ASS, SRT_REMOVE, JIANYING, BCUT]
 
 __all__ = ["GROUP", "DEFS"]
